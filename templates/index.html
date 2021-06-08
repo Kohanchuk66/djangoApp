@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lab5</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}" >
+</head>
+<body>
+{% include 'messages.html' %}
+<h1>Виконав студент групи 25Бд-ПОкпт фізико-математичного факультету Коханчук Ілля, 4 варіант</h1>
+    <section class="first-page">
+        <ul class="dots">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <nav>
+            <span class="logo">
+                <a id="logo" href="#" rel="home">Brandi</a>|    I’am your tag line
+            </span>
+            <ul>
+                {% if user.is_authenticated %}
+                    <li><a class="text-dark" href="/logout">Logout</a></li>
+                    <li><a class="btn btn-sm btn-outline-primary m-2"  href="/profile">{{user.username|title}}</a></li>
+                    <li><a href="/cart">Cart</a></li>
+                    {% if user.is_staff %}
+                        <li><a href="/orders">Orders</a></li>
+                    {% endif %}
+                {% else %}
+                    <li><a class="text-dark" href="/login">Login</a></li>
+                    <li><a class="btn btn-sm btn-primary m-2"  href="/register">Register</a></li>
+                {% endif %}
+                <li><a id="contact" href="#">Contact</a></li>
+                <li><a id="team" href="#">Team</a></li>
+                <li><a id="works" href="#">Works</a></li>
+                <li><a id="features" href="#">Features</a></li>
+                <li><a id="home" href="/">Home</a></li>
+            </ul>
+        </nav>
+        <article class="main">
+            <h2>Meet <b>Brandi</b>!</h2>
+            <p>
+                <h3><span class="green-text">/creative</span> one page template.</h3>
+            </p>
+            <p>
+                <h4>
+                    We are a team of professionals
+                </h4>
+            </p>
+        </article>
+        <address>
+            <ul class="contacts">
+                <li><a id="twitter" href="#"><img src="{% static 'images/gray-twitter.png'%}" alt="twitter"></a></li>
+                <li><a id="facebook" href="#"><img src="{% static 'images/gray-facebook.png'%}" alt="facebook"></a></li>
+                <li><a id="google" href="#"><img src="{% static 'images/white-google+.png'%}" alt="google"></a></li>
+                <li><a id="dribble" href="#"><img src="{% static 'images/dribbble.png'%}" alt="dribble"></a></li>
+            </ul>
+        </address>
+    </section>
+    <section class="features">
+        <h2>FEATURES</h2>
+        <span class="heart">
+            <img src="{% static 'images/heart.png'%}" alt="heart">
+        </span>
+        <section class="features-container">
+            <article class="feature">
+                <img src="{% static 'images/branding.png'%}" class="features-image" alt="branding">
+                <span class="features-text">
+                    <h3>Branding</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</p>
+                </span>
+            </article>
+            <article class="feature">
+                <img src="{% static 'images/pencil.png'%}" class="features-image" alt="pencil">
+                <span class="features-text">
+                    <h3>Development</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore </p>
+                </span>
+            </article>
+            <article class="feature">
+                <img src="{% static 'images/megaphone.png'%}" class="features-image" alt="megaphone">
+                <span class="features-text">
+                    <h3>Consulting</h3>
+                    <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</p>
+                </span>
+            </article>
+        </section>
+        <ul class="features-dots">
+            <li>&#8226;</li>
+            <li>&#8226;</li>
+            <li>&#8226;</li>
+        </ul>
+    </section>
+    <section class="works">
+        <h2>WORKS</h2>
+        <span class="heart">
+            <img src="{% static 'images/heart.png'%}" alt="heart">
+        </span>
+        <h4>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</h4>
+        <nav class="works-nav">
+            <ul>
+                <li>All</li>
+                <li>Branding</li>
+                <li>Web</li>
+                <li>Logo Design</li>
+                <li>Photography</li>
+            </ul>
+        </nav>
+        <section class="gallery">
+            {% for voucher in vouchers %}
+                    {% if voucher.name and voucher.image and voucher.description and voucher.price %}
+                        <article>
+                            <img src="images/{{ voucher.image }}">
+                            <section class="image-text">
+                                <img src="{% static 'images/eye.png'%}" alt="eye">
+                                <h4>{{ voucher.name }}</h4>
+                                <p>{{ voucher.destinationCountry }}</p>
+                                <p  maxlength="20">{{ voucher.description }}</p>
+                                <p>${{ voucher.price }}</p>
+                                <form action="{% url "cart:cart_add" voucher.id %}" method="post">
+                                    {{ cart_product_form }}
+                                    {% csrf_token %}
+                            <input type="submit" value="Add to cart">
+                        </form>
+                              </section>
+                        </article>
+                    {% endif %}
+                {% endfor %}
+{#            <article>#}
+{#                <img src="{% static 'images/kong.png'%}" alt="kong">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/pelican.png'%}" alt="pelican">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/work.png'%}" alt="work">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/drop.png'%}" alt="drop">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/soldiers.png'%}" alt="soldiers">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/T-short.png'%}" alt="T-short">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/menWithEye.png'%}" alt="menWithEye">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+{#            <article>#}
+{#                <img src="{% static 'images/shop.png'%}" alt="shop">#}
+{#                <section class="image-text">#}
+{#                    <img src="{% static 'images/eye.png'%}" alt="eye">#}
+{#                    <h4>Labore et dolore magnam</h4>#}
+{#                    <p>Photography</p>#}
+{#                </section>#}
+{#            </article>#}
+        </section>
+    </section>
+    <section class="works">
+        <h2>Meet Our Team</h2>
+        <span class="heart">
+            <img src="{% static 'images/heart.png'%}" alt="heart">
+        </span>
+        <h4>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</h4>
+        <section class="team">
+            <article class="workers">
+                <article class="worker-image" id="john">
+                    <h4 class="worker-text header">Nemo enim ipsam  voluptatem quia voluptas</h4>
+                    <p class="worker-text paragraph">sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem.
+                        <br>
+                        <img src="{% static 'images/twitter.png'%}" alt="twitter">
+                        <img src="{% static 'images/facebook.png'%}" alt="facebook">
+                        <img src="{% static 'images/google+.png'%}" alt="google+">
+                    </p>
+                </article>
+                <h4 class="worker-name">John Filmr Doe</h4>
+                <p>Managing Director</p>
+            </article>
+            <article class="workers">
+                <article class="worker-image" id="chystine" >
+                    <h4 class="worker-text header">Nemo enim ipsam  voluptatem quia voluptas</h4>
+                    <p class="worker-text paragraph">sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem.
+                        <br>
+                        <img src="{% static 'images/twitter.png'%}" alt="twitter">
+                        <img src="{% static 'images/facebook.png'%}" alt="facebook">
+                        <img src="{% static 'images/google+.png'%}" alt="google+">
+                    </p>
+                </article>
+                <h4 class="worker-name">Chystine Hineu</h4>
+                <p>Lead Designer</p>
+            </article>
+            <article class="workers">
+                <article class="worker-image" id="martin" >
+                    <h4 class="worker-text header">Nemo enim ipsam  voluptatem quia voluptas</h4>
+                    <p class="worker-text paragraph">sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem.
+                        <br>
+                        <img src="{% static 'images/twitter.png'%}" alt="twitter">
+                        <img src="{% static 'images/facebook.png'%}" alt="facebook">
+                        <img src="{% static 'images/google+.png'%}" alt="google+">
+                    </p>
+                </article>
+                <h4 class="worker-name">Martin Matrone</h4>
+                <p>Lead Designer</p>
+            </article>
+            <article class="workers">
+                <article class="worker-image" id="steve">
+                    <h4 class="worker-text header">Nemo enim ipsam  voluptatem quia voluptas</h4>
+                    <p class="worker-text paragraph">sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem.
+                        <br>
+                        <img src="{% static 'images/twitter.png'%}" alt="twitter">
+                        <img src="{% static 'images/facebook.png'%}" alt="facebook">
+                        <img src="{% static 'images/google+.png'%}" alt="google+">
+                    </p>
+                </article>
+                <h4 class="worker-name">Steve Flaulkin</h4>
+                <p>Sr. UI Designer</p>
+            </article>
+        </section>
+        <ul class="features-dots">
+            <li>&#8226;</li>
+            <li>&#8226;</li>
+            <li>&#8226;</li>
+        </ul>
+    </section>
+    <section class="facts works">
+        <h2>SOME FUN FACTS</h2>
+        <span class="heart">
+            <img src="{% static 'images/white-heart.png'%}" alt="heart">
+        </span>
+        <section class="facts-block">
+            <article class="fact">
+                <figure>
+                    <img src="{% static 'images/Clock.png'%}" alt="Clock">
+                </figure>
+                <h3>3200</h3>
+                <p>Hours of Work</p>
+            </article>
+            <article class="fact">
+                <figure>
+                    <img src="{% static 'images/Friends.png'%}" alt="Friends">
+                </figure>
+                <h3>120</h3>
+                <p>Satisfied Clinets</p>
+            </article>
+            <article class="fact">
+                <figure>
+                    <img src="{% static 'images/Rocket.png'%}" alt="Rocket">
+                </figure>
+                <h3>360</h3>
+                <p>Projects delivered</p>
+            </article>
+            <article class="fact">
+                <figure>
+                    <img src="{% static 'images/Cup.png'%}" alt="Cup">
+                </figure>
+                <h3>42</h3>
+                <p>Awards Won</p>
+            </article>
+        </section>
+    </section>
+    <section class="discuss works">
+        <h2>Let’s Discuss</h2>
+        <span class="heart">
+            <img src="{% static 'images/heart.png'%}" alt="heart">
+        </span>
+        <h4>Voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore</h4>
+        <section class="discuss-main">
+            <article class="discuss-text">
+                <h4>Cras at ultrices erat, sed vulputate!</h4>
+                <br>
+                <p>2345 Setwant natrer, 1234,
+                    Washington. United States.
+                    (401) 1234 567
+                    hello@brandi.com
+                    ww.brandi.com</p>
+            </article>
+            <article class="discuss-form">
+                <h4>Say hello!</h4>
+                <br>
+                <form>
+                    <input type="text" placeholder="Name" id="name">
+                    <input type="email" placeholder="Email" id="email">
+                    <input type="text" placeholder="Message" id="message">
+                    <button class="send-message">&#9993; Send message</button>
+                </form>
+            </article>
+        </section>
+        <img src="{% static 'images/map.png'%}" class="map" alt="map">
+    </section>
+    <footer>
+        <section class="footer-text">
+            <h3></h3>
+            <article>
+                <h3 class="footer-header brand">Brandi</h3>
+                <p>eusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+                    consequat.</p>
+            </article>
+            <article>
+                <h4 class="footer-header">Subscribe</h4>
+                <input type="text" placeholder="&#8594;" class="footer-text-field">
+                <p>eusmod tempor incididunt ut labore et dolore magna aliqua. </p>
+            </article>
+            <article>
+                <h3 class="footer-header">Explore</h3>
+                <ul class="footer-list">
+                    <li>Envato</li>
+                    <li>Themecurve</li>
+                    <li>Kreativeshowcase</li>
+                    <li>Freebiescurve</li>
+                    <li>Themeforest</li>
+                    <li>Microsoft</li>
+                    <li>Google</li>
+                    <li>Yahoo</li>
+                </ul>
+            </article>
+        </section>
+        <section class="created-with">
+            <p>Created with &#128420;by <span class="footer-header">themecurve</span>,
+            exclusive for kreativeshowcase</p>
+        <p class="footer-black-color date">© 2014 Brandi. All Rights Reserved.</p>
+    </section>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
+</html>

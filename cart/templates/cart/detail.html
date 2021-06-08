@@ -1,0 +1,51 @@
+{% load static %}
+{% load crispy_forms_filters %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>profile</title>
+    <link rel="stylesheet" href="{% static "style.css" %}">
+    <link rel="stylesheet" href="{% static "profile.css" %}">
+    <link rel="stylesheet" href="{% static "cart.css" %}">
+</head>
+<body>
+
+    <section class="restaurant main-section cart">
+         <h2>Your shopping cart</h2>
+    <table>
+        <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Remove</th>
+            <th>Unit price</th>
+            <th>Price</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for item in cart %}
+            {% with product=item.product %}
+                <tr>
+                    <td>{{ product.Title }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><a href="{% url "cart:cart_remove" product.id%}">Remove</a></td>
+                    <td class="num">${{ item.price }}</td>
+                    <td class="num">${{ item.total_price }}</td>
+                </tr>
+            {% endwith %}
+        {% endfor %}
+        <tr class="total">
+            <td>Total</td>
+            <td colspan="4"></td>
+            <td class="num">${{ cart.get_total_price }}</td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="text-right">
+        <a href="/" class="button light">Continue shopping</a>
+        <a href="#" class="button">Checkout</a>
+    </p>
+	</section>
+</body>
+</html>

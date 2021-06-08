@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+{% load static %}
+{% load crispy_forms_tags %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>lab5</title>
+    <link rel="stylesheet" href="{% static 'styles/main.css' %}" >
+</head>
+<body>
+
+    {% include 'messages.html' %}
+
+    <section class="first-page">
+        <ul class="dots">
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+        <nav>
+            <span class="logo">
+                <a id="logo" href="#" rel="home">Brandi</a>|    I’am your tag line
+            </span>
+            <ul>
+                <li><a id="contact" href="#">Contact</a></li>
+                <li><a id="team" href="#">Team</a></li>
+                <li><a id="works" href="#">Works</a></li>
+                <li><a id="features" href="#">Features</a></li>
+                <li><a id="home" href="/">Home</a></li>
+            </ul>
+        </nav>
+            <form method="POST" action="changeData/" >
+                {% csrf_token %}
+
+                <p>
+                    <label>Name</label><br>
+                    <input type="text" required name="name" value="{{ user.username }}"/>
+                </p>
+                <p>
+                    <label>Surname</label><br>
+                    <input type="text" required name="surname" value="{{ user.last_name }}" />
+                </p>
+                <p>
+                    <label>E-mail</label><br>
+                    <input type="email" required name="email" value="{{ user.email }}" />
+                </p>
+                <input type="submit" value="Save" >
+            </form>
+      </section>
+  </body>
+</html>
